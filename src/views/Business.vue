@@ -280,7 +280,5 @@ const resetForm = () => {
 
 
 <style scoped>
-.text{
-  color: #3c3f40;
-}
+
 </style>

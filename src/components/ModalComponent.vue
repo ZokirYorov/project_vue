@@ -50,7 +50,7 @@
 <script setup lang="ts">
 
 import CButton from "@/components/CButton.vue";
-import AppInput from "@/ui-C/AppInput.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 import {ref, watch} from "vue";
 import { IForm } from '@/models/ProjectModels';
 import { useStore } from "@/stores";

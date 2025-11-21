@@ -175,9 +175,9 @@ import { useRouter } from "vue-router";
 import CButton from "@/components/CButton.vue";
 import { useStore } from "@/stores";
 import {computed, ref} from "vue";
-import AppInput from "@/ui-C/AppInput.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 import CDialog from "@/components/CDialog.vue";
-import AppSelect from "@/ui-C/AppSelect.vue";
+import AppSelect from "@/components/ui/AppSelect.vue";
 import { useToast } from "vue-toastification";
 import OverlayBadge from "primevue/overlaybadge";
 

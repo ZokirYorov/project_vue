@@ -109,7 +109,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { ref } from "vue";
 import { useStore } from "@/stores/index.ts";
-import AppInput from "@/ui-C/AppInput.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 import CButton from "@/components/CButton.vue";
 import CDialog from "@/components/CDialog.vue";
 

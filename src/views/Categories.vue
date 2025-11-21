@@ -168,7 +168,7 @@ import DeleteConfirm from "@/components/DeleteConfirm.vue";
 import {useDownload} from "@/composable/useDownload.ts";
 import { useToast } from "vue-toastification";
 import { useStore } from "@/stores/index.ts";
-import AppInput from "@/ui-C/AppInput.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 import Image from "primevue/image"
 
 

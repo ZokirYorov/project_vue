@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 
-import AppInput from "@/ui-C/AppInput.vue";
+import AppInput from "@/components/ui/AppInput.vue";
 import { ref } from "vue";
 import CButton from "@/components/CButton.vue";
 

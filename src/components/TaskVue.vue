@@ -138,7 +138,7 @@
                  ? statusColors[item.status]
                  : statusColor[item.status],
                     ]"
-                class="rounded-2xl p-1 px-1 flex min-w-[80px] transition-all duration-200 font-semibold flex justify-center text-[12px]"
+                class="rounded-2xl p-1 px-1 min-w-[80px] transition-all duration-200 font-semibold flex justify-center text-[12px]"
             >
               {{ getStatusText(item.status) }}
             </span>
@@ -179,7 +179,6 @@ import AppInput from "@/components/ui/AppInput.vue";
 import CDialog from "@/components/CDialog.vue";
 import AppSelect from "@/components/ui/AppSelect.vue";
 import { useToast } from "vue-toastification";
-import OverlayBadge from "primevue/overlaybadge";
 
 
 const Toast = useToast();

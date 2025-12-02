@@ -246,11 +246,11 @@ const submitForm = () => {
        ... form.value
      };
    }
-   Toast.success("Muvaffaqiyatli uzgartirildi!");
+   Toast.success("Successfully changed!");
   } else {
     form.value.id = items.value.length + 1;
     items.value.push({... form.value});
-    Toast.success("Muvaffaqiyatli qo'shildi!");
+    Toast.success("Added successfully!");
   }
   console.log('Itemlar', items.value);
 visibleForm.value = false;
@@ -265,15 +265,15 @@ const editForm = (item: any) => {
 }
 
 const deleteItem = (id: number | null) => {
-  if (id === null ) return Toast.error('Xatolik yuz berdi!');
+  if (id === null ) return Toast.error('An error occurred!');
   const itemCheck = items.value.find(item => item.id === id);
   if (itemCheck?.checked === true)
-    return Toast.info("Bu ma'lumot belgilangan!");
+    return Toast.info("This information is marked!");
   const index = items.value.findIndex(i => i.id === id);
   if (index !== -1) {
     items.value.splice(index, 1);
   }
-  Toast.info("Muvaffaqiyatli uchirildi!");
+  Toast.info("Successfully deleted!");
 }
 
 const resetForm = () => {

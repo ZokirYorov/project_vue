@@ -208,11 +208,11 @@ const pushItem = (newItem) => {
     const index = menuItems.value.findIndex(item => item.id === form.value.id);
     if (index !== -1) {
       menuItems.value[index] = newItem;
-      Toast.success("Muvaffaqiyatli uzgartirildi!")
+      Toast.success("Successfully changed!")
     }
   } else {
     menuItems.value.push(newItem);
-    Toast.success("Muvaffaqiyatli qo'shildi!");
+    Toast.success("Added successfully!");
   }
 
   saveToLocal()
@@ -240,7 +240,7 @@ const deleteConfirm = () => {
 
      menuItems.value.splice(index, 1);
      saveToLocal()
-     Toast.info('Muvaffaqiyatli uchirildi!')
+     Toast.info('Successfully deleted!')
    }
 
    confirmDelete.value = false;

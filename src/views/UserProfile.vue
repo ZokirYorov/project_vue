@@ -156,11 +156,11 @@ const formSubmit = () => {
       userItems.value[index] = form.value;
 
     }
-    Toast.success("Muvoffaqiyatli uzgartirildi!");
+    Toast.success("Successfully changed!");
   } else {
     userItems.value.push(form.value);
     console.log('User itemlari', userItems.value);
-    Toast.success("Muvoffaqiyatli qo'shildi!");
+    Toast.success("Added successfully!");
   }
   resetForm();
   profileVisible.value = false;

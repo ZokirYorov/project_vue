@@ -4,7 +4,7 @@
         @submit.prevent="submitForm"
         class="gap-2 w-[350px] min-h-[400px] rounded-md flex flex-col p-4">
       <h2 class="flex text-xl font">
-        {{isEditing ? "Formani o'zgartirish" : 'Add Product' }}
+        {{isEditing ? "Change form" : 'Add Product' }}
       </h2>
       <AppInput
           label="Image"

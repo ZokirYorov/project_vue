@@ -238,11 +238,11 @@ const pushItem = (newItem) => {
     const index = listItems.value.findIndex(item => item.id === newItem.id);
     if (index !== -1) {
       listItems.value[index] = newItem;
-      Toast.success("Muvaffaqiyatli uzgartirildi!")
+      Toast.success("Successfully changed!")
     }
   } else {
     listItems.value.push(newItem);
-    Toast.success("Muvaffaqiyatli qo'shildi!");
+    Toast.success("Added successfully!");
   }
 
   saveLocal()
@@ -270,7 +270,7 @@ const deleteConfirm = () => {
 
       listItems.value.splice(index, 1);
       saveLocal()
-      Toast.info('Muvaffaqiyatli uchirildi!')
+      Toast.info('Successfully deleted!')
     }
 
     deleteConfirmItem.value = false;

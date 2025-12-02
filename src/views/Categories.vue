@@ -121,7 +121,6 @@
           <td class="text-start p-2">
             <Image
                 :src="item.imageUrl"
-                alt="Image"
                 preview
                 class="w-15 h-15 rounded-xl p-2 m-2 bg-white object-cover"
             >
@@ -129,7 +128,7 @@
                 <img
                     :src="item.imageUrl"
                     alt="preview"
-                    width="950"
+                    class="object-cover w-300 rounded-2xl"
                     :style="slotProps.style"
                     @click="slotProps.onClick"
                 />

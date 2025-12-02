@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
-import UserProfile from "@/views/UserProfile.vue";
 
 const routes: Array<RouteRecordRaw>  = [
     {

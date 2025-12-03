@@ -23,7 +23,11 @@
       >
         <Column
             v-for="(col, index) of columns" :key="index" :field="col.field" :header="col.header"
-        />
+        >
+          <template v-if="col.field === 'price'" #body="{ data }">
+            {{data.price}} so'm
+          </template>
+        </Column>
         <Column header="Actions" class="w-[100px]">
           <template #body="slotProps">
             <div class="flex gap-2">
@@ -109,10 +113,12 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { ref } from "vue";
 import { useStore } from "@/stores/index.ts";
+import { useToast } from "vue-toastification";
 import AppInput from "@/components/ui/AppInput.vue";
 import CButton from "@/components/CButton.vue";
 import CDialog from "@/components/CDialog.vue";
 
+const Toast = useToast();
 const themeStore = useStore();
 const visibleForm = ref(false);
 const selectedForm = ref('');
@@ -137,10 +143,12 @@ const formSubmit = () => {
     products.value[index] = {
       ...form.value,
     };
+    Toast.success("Successfully changed!");
   } else {
     const idLength = products.value.length ? Math.max(...products.value.map(item => item.id)) : 0;
     form.value.id = idLength + 1;
     products.value.push(form.value);
+    Toast.success("Added successfully!");
   }
   visibleForm.value = false;
   resetForm();
@@ -153,6 +161,7 @@ const formCancel = () => {
 const deleteRow = (data) => {
   const index = products.value.findIndex(p => p.id === data.id);
   products.value.splice(index, 1);
+  Toast.info("Successfully deleted!");
 }
 
 const resetForm = () => {

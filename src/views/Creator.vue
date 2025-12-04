@@ -12,6 +12,16 @@
           @click="addForm"
       />
     </div>
+    <CDialog
+        :show="deleteRowItem"
+        @close="deleteRowItem = false"
+        bodyClass="rounded-lg !bg-bg-primary text-center px-4 py-6"
+    >
+      <DeleteConfirm title="Ushbu itemni uchirmoqchimisiz?"
+                     v-model:show="deleteRowItem"
+                     @confirm="handleDeleteItem"
+      />
+    </CDialog>
     <div
         class="shadow-xl flex flex-col justify-between overflow-x-auto rounded-xl p-4 border"
         :class="themeStore.theme === 'dark' ? 'border-gray-600' : 'border-gray-200'"
@@ -33,13 +43,13 @@
             <div class="flex gap-2">
               <button
                   @click="editRow(slotProps.data)"
-                  class="bg-blue-500 text-white m-2 px-3 rounded"
+                  class="bg-blue-500 cursor-pointer text-white m-2 px-3 rounded"
               >
                 Edit
               </button>
               <button
                   @click="deleteRow(slotProps.data)"
-                  class="bg-red-500 text-white m-2 px-3 rounded"
+                  class="bg-red-500 cursor-pointer text-white m-2 px-3 rounded"
               >
                 Delete
               </button>
@@ -117,11 +127,14 @@ import { useToast } from "vue-toastification";
 import AppInput from "@/components/ui/AppInput.vue";
 import CButton from "@/components/CButton.vue";
 import CDialog from "@/components/CDialog.vue";
+import DeleteConfirm from "@/components/DeleteConfirm.vue";
 
 const Toast = useToast();
 const themeStore = useStore();
 const visibleForm = ref(false);
 const selectedForm = ref('');
+const deleteRowItem = ref(false);
+const deleteId = ref(null);
 
 const addForm = () => {
   visibleForm.value = true;
@@ -158,10 +171,16 @@ const formCancel = () => {
   resetForm();
 }
 
-const deleteRow = (data) => {
-  const index = products.value.findIndex(p => p.id === data.id);
+const handleDeleteItem = () => {
+  const index = products.value.findIndex(p => p.id === deleteId.value);
   products.value.splice(index, 1);
   Toast.info("Successfully deleted!");
+  deleteRowItem.value = false;
+}
+
+const deleteRow = (data) => {
+  deleteRowItem.value = true;
+  deleteId.value = data.id;
 }
 
 const resetForm = () => {

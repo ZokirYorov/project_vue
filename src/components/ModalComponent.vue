@@ -53,9 +53,7 @@ import CButton from "@/components/CButton.vue";
 import AppInput from "@/components/ui/AppInput.vue";
 import {ref, watch} from "vue";
 import { IForm } from '@/models/ProjectModels';
-import { useStore } from "@/stores";
 
-const themeStore = useStore();
 const emit = defineEmits(["update:modelValue", 'changeImage', 'submitForm', 'resetForm']);
 const props = defineProps<{
   modelValue: IForm;
@@ -63,7 +61,6 @@ const props = defineProps<{
 }>()
 const form = ref({...props.modelValue});
 
-const imageUrl = ref(null);
 
 
 const submitForm = () => {

@@ -18,7 +18,7 @@
           />
           <CButton
               type="button"
-              text="Added"
+              text="Add"
               class="bg-blue-800 text-white w-[80px]"
               @click="modalVisible()"
           />

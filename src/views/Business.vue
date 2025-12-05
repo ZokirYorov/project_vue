@@ -7,6 +7,10 @@
       <div class="w-full flex justify-between">
         <h2 class="text-2xl font-semibold">Table component</h2>
         <div class="flex gap-5 mr-10">
+          <div class="flex gap-2 items-center duration-75 transition-all border border-gray-400 rounded-md px-2">
+            <i class="fa-solid fa-magnifying-glass text-sm border-r border-gray-400 pr-2 text-gray-400"></i>
+            <input v-model="searchItems" class="duration-75 transition-all outline-none px-2 py-1" type="search" placeholder="Search...">
+          </div>
           <CButton
               type="button"
               text="EXCEL"
@@ -72,7 +76,7 @@
         </thead>
         <tbody>
           <tr
-              v-for="(item, index) in menuItems"
+              v-for="(item, index) in filteredItems"
               :key="index"
               :class="themeStore.theme === 'dark' ? 'hover:bg-gray-600 border-b border-gray-700' : 'border-t border-gray-200 hover:bg-gray-100'"
               class="rounded-2xl items-center"
@@ -90,7 +94,7 @@
                   <img
                       alt="preview"
                       :src="item.imageUrl"
-                      class="max-w-[900px]"
+                      class="rounded-2xl max-w-[800px] max-h-[500px]"
                       :style="slotProps.style"
                       @click="slotProps.onClick"
                   />
@@ -130,7 +134,7 @@
 
 import ModalComponent from "@/components/ModalComponent.vue";
 import CDialog from "@/components/CDialog.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import CButton from "@/components/CButton.vue";
 import DeleteConfirm from "@/components/DeleteConfirm.vue";
 import {useDownload} from "@/composable/useDownload.ts";
@@ -155,6 +159,16 @@ const form = ref({
   number: '',
   data: '',
 });
+
+const searchItems = ref('')
+
+const filteredItems = computed(() => {
+  const term = searchItems.value.toLowerCase();
+  return menuItems.value.filter(item =>
+      item.name.toLowerCase().includes(term) ||
+      item.data.toLowerCase().includes(term) ||
+      item.number.toLowerCase().includes(term))
+})
 
 const visibleModal = () => {
   isShow.value = true

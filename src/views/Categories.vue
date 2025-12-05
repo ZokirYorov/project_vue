@@ -7,7 +7,11 @@
         class="flex gap-8 flex-col overflow-x-auto w-full">
       <div class="w-full flex justify-between">
         <h2 class="text-2xl font-semibold">Table component</h2>
-        <div class="flex gap-5 mr-10">
+        <div class="flex gap-5 items-end">
+          <div class="flex items-center border border-gray-600 rounded-md px-2">
+            <i class="fa-solid fa-magnifying-glass text-sm border-r border-gray-400 pr-2 text-gray-400"></i>
+            <input v-model="search" class="duration-200 transition-all px-2 py-1 outline-none" placeholder="Search..." type="search">
+          </div>
           <CButton
               type="button"
               text="EXCEL"
@@ -112,7 +116,7 @@
         </thead>
         <tbody>
         <tr
-            v-for="(item, index) in listItems"
+            v-for="(item, index) in searchInput"
             :key="index"
             :class="themeStore.theme === 'dark' ? 'hover:bg-gray-600 border-b border-gray-700' : 'border-t border-gray-200 hover:bg-gray-100'"
             class="rounded-2xl items-center"
@@ -128,7 +132,7 @@
                 <img
                     :src="item.imageUrl"
                     alt="preview"
-                    class="object-cover w-300 rounded-2xl"
+                    class="object-cover w-250 rounded-2xl"
                     :style="slotProps.style"
                     @click="slotProps.onClick"
                 />
@@ -161,7 +165,7 @@
 
 <script setup>
 import CDialog from "@/components/CDialog.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import CButton from "@/components/CButton.vue";
 import DeleteConfirm from "@/components/DeleteConfirm.vue";
 import {useDownload} from "@/composable/useDownload.ts";
@@ -207,6 +211,16 @@ const downloadFile = async () => {
 const saveLocal = () => {
   localStorage.setItem("listItems", JSON.stringify(listItems.value));
 }
+
+const search = ref('')
+
+const searchInput = computed(() => {
+  const term = search.value.toLowerCase();
+  return listItems.value.filter(item =>
+      item.data.toLowerCase().includes(term) ||
+      item.number.toLowerCase().includes(term)||
+      item.name.toLowerCase().includes(term))
+})
 
 const listItems =ref( JSON.parse(localStorage.getItem("listItems") || '[]') );
 

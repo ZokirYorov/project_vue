@@ -5,12 +5,18 @@
   >
     <div class="flex items-center justify-between">
       <span class="text-xl font-bold">Table content</span>
-      <CButton
-          type="button"
-          text="Add"
-          variant="primary"
-          @click="addForm"
-      />
+      <div class="flex items-center gap-2">
+        <div class="flex items-center border border-gray-600 rounded-md px-2">
+          <i class="fa-solid fa-magnifying-glass text-sm border-r border-gray-400 pr-2 text-gray-400"></i>
+          <input class="outline-none px-2 py-1" placeholder="Search..." v-model="searchItem" type="search">
+        </div>
+        <CButton
+            type="button"
+            text="Add"
+            variant="primary"
+            @click="addForm"
+        />
+      </div>
     </div>
     <CDialog
         :show="deleteRowItem"
@@ -28,12 +34,22 @@
     >
       <DataTable
           :rowClass="rowClass"
-          :value="products" tableStyle="w-100%"
+          :value="filteredItems"
+          tableStyle="w-100%"
           class="min-h-[100px] flex gap-4"
       >
         <Column
             v-for="(col, index) of columns" :key="index" :field="col.field" :header="col.header"
         >
+          <template v-if="col.field === 'imageUrl'" #body="{ data }">
+            <Image
+                :src="getImage(data.imageUrl)"
+                class="w-[50px] p-1 items-center flex object-cover h-15"
+            >
+
+            </Image>
+
+          </template>
           <template v-if="col.field === 'price'" #body="{ data }">
             {{data.price}} so'm
           </template>
@@ -61,11 +77,10 @@
     <CDialog
         v-model:show="visibleForm"
         has-close-icon
-        @close="formCancel"
+        @close="visibleForm = false"
         bodyClass="rounded-lg p-4 bg-bg-primary"
     >
       <div
-          @close="visibleForm = false"
           class="flex items-center justify-center p-4">
         <form
             :class="themeStore.theme === 'dark' ? 'text-white' : 'text-gray-800'"
@@ -73,6 +88,11 @@
             @submit.prevent="formSubmit"
         >
           <h2 class="text-2xl font-medium">Form title</h2>
+          <AppInput label="Image"
+                    type="file"
+                    @change="fileChange($event)"
+                    v-model="form.imageUrl"
+          />
           <AppInput
               type="text"
               placeholder="Enter Product Name"
@@ -121,13 +141,14 @@
 <script setup>
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { ref } from "vue";
+import {computed, ref} from "vue";
 import { useStore } from "@/stores/index.ts";
 import { useToast } from "vue-toastification";
 import AppInput from "@/components/ui/AppInput.vue";
 import CButton from "@/components/CButton.vue";
 import CDialog from "@/components/CDialog.vue";
 import DeleteConfirm from "@/components/DeleteConfirm.vue";
+import Image from 'primevue/image'
 
 const Toast = useToast();
 const themeStore = useStore();
@@ -136,8 +157,22 @@ const selectedForm = ref('');
 const deleteRowItem = ref(false);
 const deleteId = ref(null);
 
+const searchItem = ref('');
+
+const filteredItems = computed(() => {
+  const term = searchItem.value.toLowerCase();
+  return products.value.filter(item =>
+      item.name.toLowerCase().includes(term) ||
+      String(item.number).toLowerCase().includes(term) ||
+      item.date.toLowerCase().includes(term) ||
+      String(item.price).toLowerCase().includes(term)
+  );
+})
+
+
 const addForm = () => {
   visibleForm.value = true;
+  resetForm()
 }
 
 const rowClass = () => {
@@ -164,6 +199,7 @@ const formSubmit = () => {
     Toast.success("Added successfully!");
   }
   visibleForm.value = false;
+  selectedForm.value = null;
   resetForm();
 }
 const formCancel = () => {
@@ -183,9 +219,23 @@ const deleteRow = (data) => {
   deleteId.value = data.id;
 }
 
+const getImage = (file) => {
+  if (!file) return "";
+  if (typeof file === "string") return file; // oldin saqlangan bo‘lsa
+  return URL.createObjectURL(file); // File → blob url
+};
+
+const fileChange = (event) => {
+  const file = event.target.files?.[0];
+  if (file) {
+    form.value.imageUrl = file;
+  }
+}
+
 const resetForm = () => {
   form.value = {
     id: null,
+    imageUrl: null,
     name: "",
     number: "",
     date: "",
@@ -194,6 +244,7 @@ const resetForm = () => {
 }
 const form = ref({
   id: null,
+  imageUrl: null,
   name: "",
   number: "",
   date: "",
@@ -204,6 +255,10 @@ const columns = ref([
   {
     field: "id",
     header: "ID",
+  },
+  {
+    field: "imageUrl",
+    header: "Image",
   },
   {
     field: "name",
@@ -226,6 +281,7 @@ const columns = ref([
 const products = ref([
   {
     id: 1,
+    imageUrl: "",
     name: "Product 1",
     number: 11,
     date: "2.12.2025",
@@ -233,6 +289,7 @@ const products = ref([
   },
   {
     id: 2,
+    imageUrl: "",
     name: "Product 2",
     number: 22,
     date: "4.12.2025",
@@ -240,6 +297,7 @@ const products = ref([
   },
   {
     id: 3,
+    imageUrl: "",
     name: "Product 3",
     number: 32,
     date: "3.11.2025",
@@ -247,6 +305,7 @@ const products = ref([
   },
   {
     id: 4,
+    imageUrl: "",
     name: "Product 4",
     number: 42,
     date: "1.12.2025",
@@ -254,6 +313,7 @@ const products = ref([
   },
   {
     id: 5,
+    imageUrl: "",
     name: "Product 5",
     number: 55,
     date: "2.12.2025",

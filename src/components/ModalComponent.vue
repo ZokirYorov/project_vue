@@ -26,7 +26,6 @@
       <AppInput
           label="Data"
           type="date"
-          placeholder="Enter your birth date"
           v-model="form.data"
       />
 

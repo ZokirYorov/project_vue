@@ -364,7 +364,7 @@ const editItem = (item: Task) => {
 }
 const deleteItem = async (id: string) => {
   try {
-    const response = await axios.delete(`http://localhost:3000/posts/${id}`)
+    await axios.delete(`http://localhost:3000/posts/${id}`)
     dataStore.state.items = dataStore.state.items.filter(f => f.id !== id)
     await dataStore.loadGetApi()
   }

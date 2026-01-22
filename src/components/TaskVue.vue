@@ -9,344 +9,441 @@
           variant="ghost-accent"
       />
     </div>
-    <div
-        :class="themeStore.theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'"
-        class="flex flex-col w-full gap-5 p-6 rounded-md"
+
+    <!-- Kanban Board -->
+    <div class="flex gap-4 w-full rounded-md text-gray-800 p-6"
+         :class="themeStore.theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200 text-gray-600'"
     >
-      <div class="flex gap-5 flex-col">
-        <div class="flex items-center justify-between h-full w-full">
-          <div class="flex items-center justify-between gap-10">
-           <div class="relative flex items-center text-md font-semibold">
-             <span
-                 class="px-2 py-1 rounded-md"
-                 :class="[themeStore.theme === 'dark' ? statusColors[1] : statusColor[1]]"
-             >
-               To Do
-             </span>
-             <span
-                 :class="[themeStore.theme === 'dark' ? statusColors[1] : statusColor[1]]"
-                 class="absolute rounded-full w-5 h-5 text-xs flex items-center justify-center -top-4 -right-3"
-             >
-               {{todoCount}}
-             </span>
-           </div>
-            <div class="flex items-center relative text-md font-semibold">
-              <span class="px-2 py-1 rounded-md"
-                    :class="[themeStore.theme === 'dark' ? statusColors[2] : statusColor[2]]"
-              >
-                In Progress
-              </span>
-              <span class="absolute rounded-full w-5 h-5 text-xs flex items-center justify-center -top-4 -right-3"
-                    :class="[themeStore.theme === 'dark' ? statusColors[2] : statusColor[2]]"
-              >
-                {{inProgressCount}}
-              </span>
-            </div>
-            <div class="flex items-center relative text-md font-semibold">
-              <span class="px-2 py-1 rounded-md"
-                    :class="[themeStore.theme === 'dark' ? statusColors[3] : statusColor[3]]"
-              >
-                Completed
-              </span>
-              <span class="absolute rounded-full w-5 h-5 text-xs flex items-center justify-center -top-4 -right-3"
-                    :class="[themeStore.theme === 'dark' ? statusColors[3] : statusColor[3]]"
-              >
-                {{completedCount}}
-              </span>
-            </div>
-          </div>
-          <CButton
-              @click="clickFormVisible"
-              text="Add new task"
-              type="button"
-              faClass="fa-solid fa-plus"
-              isHasFaIcon
-          />
-          <CDialog
-              :show="visibleForm"
-              has-close-icon
-              @close="closeVisibleForm"
-              bodyClass="rounded-lg p-4 bg-bg-primary"
+      <!-- TODO Column -->
+      <div
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          class="w-1/4 p-3 group rounded"
+      >
+        <div class="flex items-center text-center w-full h-[50px] gap-2 p-2">
+          <h3 class="font-semibold flex items-center uppercase text-sm"
+              :class="[themeStore.theme === 'dark' ? 'text-gray-400' : '']"
+          >Boshlash</h3>
+          <span
+              v-if="columns.todo.length > 0"
+              :class="themeStore.theme === 'dark' ? 'text-gray-200 bg-gray-500' : 'bg-gray-200 text-gray-600'"
+              class="flex rounded-md min-w-6 h-6 items-center justify-center"
           >
-            <div
-                @close="visibleForm = false"
-                class="w-full gap-5 flex items-center">
-              <form
-                  class="w-full gap-5 flex flex-col"
-                  @submit.prevent="submitForm"
-              >
-                <span class="text-2xl font-semibold">Form title</span>
-                <AppInput
-                    label="Task title"
-                    type="text"
-                    placeholder="Inter task"
-                    v-model="form.title"
-                />
-                <AppInput
-                    label="Data"
-                    type="date"
-                    v-model:number="form.data"
-                />
-                <AppSelect
-                    :options="optionStatuses"
-                    text-field="status"
-                    value-field="id"
-                    disabledValue="Statusni tanlang"
-                    v-model="form.status"
-                />
-                <div class="flex w-full justify-end items-center gap-5">
-                  <CButton
-                      type="button"
-                      text="Cancel"
-                      variant="ghost-accent"
-                  />
-                  <CButton
-                      type="submit"
-                      text="Save"
-                      variant="primary"
-                  />
-                </div>
-              </form>
-            </div>
-
-          </CDialog>
+            {{columns.todo.length}}
+          </span>
         </div>
-        <div
-            :class="themeStore.theme === 'dark' ? 'bg-gray-700 border border-gray-800' : 'bg-white border border-gray-200 text-gray-900'"
-            class="flex justify-between transition-all duration-200 items-center w-full rounded-2xl shadow-lg"
-            v-for="(item, index) in items"
-            :key="index"
+        <Draggable
+            v-model="columns.todo"
+            group="tasks"
+            :animation="200"
+            item-key="id"
+            ghost-class="ghost"
+            class="min-h-[200px]"
         >
-          <div class="flex w-full items-center p-6 gap-4">
-            <i class="fa-solid fa-bars text-gray-400"></i>
-            <input
-                type="checkbox"
-                class="w-4 h-4"
-                v-model="item.checked"
+          <template #item="{ element }">
+            <TaskCard
+                :task="element"
+                @edit="updateTask('todo', $event)"
+                @delete="deleteTask('todo', $event)"
             />
-            <span
-                  class="font-sans"
-                  :class="{textItem: item.checked}"
+          </template>
+          <template #footer>
+            <button
+                :class="[themeStore.theme === 'dark' ? 'text-gray-400 bg-gray-800 hover:bg-gray-600' : 'text-gray-600 bg-white hover:bg-gray-200']"
+                class="w-full text-start text-sm group-hover:opacity-100 opacity-0 group-hover:translate-y-1 transition-all duration-300 cursor-pointer p-2 rounded"
+                @click="addTask('todo')"
             >
-              {{item.title}}
-            </span>
-          </div>
-          <div class="flex items-center text-sm duration-200 transition-all gap-2">
-            <span
-                :class="[
-                 themeStore.theme === 'dark'
-                 ? statusColors[item.status]
-                 : statusColor[item.status],
-                    ]"
-                class="rounded-2xl p-1 px-1 min-w-[80px] transition-all duration-200 font-semibold flex justify-center text-[12px]"
-            >
-              {{ getStatusText(item.status) }}
-            </span>
-
-            <span class="flex w-[130px] transition-all duration-200 items-center gap-1">
-              <i class="fa-regular fa-calendar"></i>
-              {{dataItem(item.data)}}
-            </span>
-            <div class="flex items-center gap-2 px-2">
-              <CButton
-                  type="button"
-                  text="Edit"
-                  variant="ghost-accent"
-                  @click="editForm(item)"
-              />
-              <CButton
-                  type="button"
-                  text="Delete"
-                  variant="danger"
-                  @click="deleteItem(item.id)"
-              />
-            </div>
-          </div>
-        </div>
+              + Add task
+            </button>
+          </template>
+        </Draggable>
       </div>
+
+      <!-- PROGRESS Column -->
+      <div
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700 text-gray-600' : 'bg-gray-100 text-gray-400'"
+          class="w-1/4 p-3 group rounded"
+      >
+        <div class="flex items-center w-full h-[50px] gap-2 p-2">
+          <h3 class="font-semibold flex items-center uppercase text-sm"
+              :class="[themeStore.theme === 'dark' ? 'text-gray-400' : '']"
+          >Jarayonda</h3>
+          <span
+              v-if="columns.progress.length > 0"
+              :class="themeStore.theme === 'dark' ? 'text-gray-200 bg-gray-500' : 'bg-gray-200 text-gray-600'"
+              class="flex rounded-md min-w-6 h-6 items-center justify-center"
+          >
+            {{columns.progress.length}}
+          </span>
+        </div>
+        <Draggable
+            v-model="columns.progress"
+            group="tasks"
+            :animation="200"
+            item-key="id"
+            ghost-class="ghost"
+            class="min-h-[200px]"
+        >
+          <template #item="{ element }">
+            <TaskCard
+                :task="element"
+                @edit="updateTask('progress', $event)"
+                @delete="deleteTask('progress', $event)"
+            />
+          </template>
+          <template #footer>
+            <button
+                :class="[themeStore.theme === 'dark' ? 'text-gray-400 bg-gray-800 hover:bg-gray-600' : 'text-gray-600 bg-white hover:bg-gray-200']"
+                class="w-full text-start group-hover:opacity-100 opacity-0 group-hover:translate-y-1 transition-all duration-300 mb-3 text-sm cursor-pointer p-2 rounded"
+                @click="addTask('progress')"
+            >
+              + Add task
+            </button>
+          </template>
+        </Draggable>
+      </div>
+
+      <!-- TESTING Column -->
+      <div
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          class="w-1/4 p-3 group rounded"
+      >
+        <div class="flex items-center w-full h-[50px] gap-2 p-2">
+          <h3 class="font-semibold flex items-center uppercase text-sm"
+              :class="[themeStore.theme === 'dark' ? 'text-gray-400' : '']"
+          >Testing</h3>
+          <span
+              v-if="columns.testing.length > 0"
+              :class="themeStore.theme === 'dark' ? 'text-gray-200 bg-gray-500' : 'bg-gray-200 text-gray-600'"
+              class="flex rounded-md min-w-6 h-6 items-center justify-center"
+          >
+            {{columns.testing.length}}
+          </span>
+        </div>
+        <Draggable
+            v-model="columns.testing"
+            group="tasks"
+            :animation="200"
+            item-key="id"
+            ghost-class="ghost"
+            class="min-h-[200px]"
+        >
+          <template #item="{ element }">
+            <TaskCard
+                :task="element"
+                @edit="updateTask('testing', $event)"
+                @delete="deleteTask('testing', $event)"
+            />
+          </template>
+          <template #footer>
+            <button
+                :class="[themeStore.theme === 'dark' ? 'text-gray-400 bg-gray-800 hover:bg-gray-600' : 'text-gray-600 bg-white hover:bg-gray-200']"
+                class="w-full text-start group-hover:opacity-100 opacity-0 group-hover:translate-y-1 transition-all duration-300 mb-3 text-sm cursor-pointer p-2 rounded"
+                @click="addTask('testing')"
+            >
+              + Add task
+            </button>
+          </template>
+        </Draggable>
+      </div>
+
+      <!-- DONE Column -->
+      <div
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          class="w-1/4 p-3 group rounded"
+      >
+        <div class="flex items-center w-full h-[50px] gap-2 p-2">
+          <h3 class="font-semibold flex items-center uppercase text-sm"
+              :class="[themeStore.theme === 'dark' ? 'text-gray-400' : '']"
+          >Bajarilgan</h3>
+          <span
+              v-if="columns.done.length > 0"
+              :class="themeStore.theme === 'dark' ? 'text-gray-200 bg-gray-500' : 'bg-gray-200 text-gray-600'"
+              class="flex rounded-md min-w-6 h-6 items-center justify-center"
+          >
+            {{columns.done.length}}
+          </span>
+        </div>
+        <Draggable
+            v-model="columns.done"
+            group="tasks"
+            item-key="id"
+            :animation="200"
+            ghost-class="ghost"
+            class="min-h-[200px]"
+        >
+          <template #item="{ element }">
+            <TaskCard
+                :task="element"
+                @edit="updateTask('done', $event)"
+                @delete="deleteTask('done', $event)"
+            />
+          </template>
+          <template #footer>
+            <button
+                :class="[themeStore.theme === 'dark' ? 'text-gray-400 bg-gray-800 hover:bg-gray-600' : 'text-gray-600 bg-white hover:bg-gray-200']"
+                class="w-full text-start group-hover:opacity-100 opacity-0 group-hover:translate-y-1 transition-all duration-300 mb-3 text-sm cursor-pointer p-2 rounded"
+                @click="addTask('done')"
+            >
+              + Add task
+            </button>
+          </template>
+        </Draggable>
+      </div>
+    </div>
+
+    <!-- Task Modal -->
+    <CDialog
+        :show="showTaskModal"
+        has-close-icon
+        @close="closeModal"
+        bodyClass="rounded-lg p-6 bg-bg-primary w-[600px]"
+    >
+      <form @submit.prevent="submitTask" class="flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold">
+          {{ editingTask?.id ? 'Edit Task' : 'Add New Task' }}
+        </h2>
+
+        <!-- Title Input -->
+        <AppInput
+            label="Task Title"
+            placeholder="Enter task title"
+            v-model="editingTask!.title"
+            required
+        />
+
+        <!-- File Upload Section -->
+        <AppInput
+            type="file"
+            label="File"
+            placeholder="Enter task file"
+            @change="imageChange($event)"
+        />
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3 mt-4">
+          <CButton
+              type="button"
+              text="Cancel"
+              variant="ghost-accent"
+              @click="closeModal"
+          />
+          <CButton
+              type="submit"
+              text="Save Task"
+              variant="primary"
+          />
+        </div>
+      </form>
+    </CDialog>
+    <div
+        class="flex flex-col gap-4 p-6"
+    >
+      <table class="w-full rounded-lg shadow-md"
+             :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200 text-gray-600'"
+      >
+        <colgroup>
+          <col style="width: 2%">
+          <col style="width: 15%">
+          <col style="width: 15%">
+          <col style="width: 15%">
+          <col style="width: 15%">
+        </colgroup>
+        <thead
+        >
+        <tr>
+          <th class="items-start px-1 py-2">№</th>
+          <th class="text-start px-1 py-2">File</th>
+          <th class="text-start px-1 py-2">Title</th>
+          <th class="text-start px-1 py-2">Status</th>
+          <th class="text-start px-1 py-2">Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            class="border-b border-gray-400 rounded"
+            :class="themeStore.theme === 'dark' ? 'bg-gray-600' : 'bg-gray-100 text-gray-600'"
+            v-for="(item, index) in dataStore.state.items"
+            :key="item.id"
+        >
+          <td class="text-center px-2 py-3">{{index + 1}}</td>
+          <td class="text-center px-2 py-3"
+              v-if="item.files && item.files.length"
+          >
+            <img class="w-16 h-16 rounded-full" :src="item.files[0].url" alt="">
+          </td>
+          <td class="text-start px-2 py-3">{{item.title}}</td>
+          <td class="text-start px-2 py-3">{{item.status}}</td>
+          <td>
+            <div
+                class="flex items-center gap-2"
+            >
+              <button @click="editItem(item)" class="bg-gray-400 rounded px-2 py-1">Edit</button>
+              <button @click="deleteItem(item.id)" class="bg-red-800 rounded px-2 py-1 cursor-pointer hover:bg-red-700">Delete</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 </template>
-
-
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import CButton from "@/components/CButton.vue";
 import { useStore } from "@/stores";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import AppInput from "@/components/ui/AppInput.vue";
 import CDialog from "@/components/CDialog.vue";
-import AppSelect from "@/components/ui/AppSelect.vue";
+import TaskCard from "@/components/TaskCard.vue";
+import Draggable from "vuedraggable";
+import axios from "axios";
 import { useToast } from "vue-toastification";
-
 
 const Toast = useToast();
 const themeStore = useStore();
 const router = useRouter();
+const dataStore = useStore();
 
 const backButton = () => {
   router.back();
 }
 
-const visibleForm = ref(false);
-const selectedForm = ref<number | null>(null);
+type ColumnKey = 'todo' | 'progress' | 'testing' | 'done';
 
-const form = ref<Task>({
-  id: null,
-  checked: false,
-  title: "",
-  data: null,
-  status: "",
-})
+interface TaskFile {
+  name: string;
+  url: string;
+  type: string;
+}
 
 interface Task {
-  id: number | null;
+  id: string;
   title: string;
-  data: Date | null;
-  status: string | number;
-  checked: boolean;
+  status: string;
+  files: TaskFile[];
 }
 
-const items = ref<Task[]>([
-  {
-    id: 1,
-    status: 1,
-    checked: false,
-    title: 'My new task',
-    data: new Date()
-  },
-  {
-    id: 2,
-    status: 2,
-    checked: false,
-    title: 'Task',
-    data: new Date()
-  },
-  {
-    id: 3,
-    status: 3,
-    checked: false,
-    title: 'Task completed',
-    data: new Date()
+const showTaskModal = ref(false);
+const editingTask = ref<Task | null>(null);
+const editingColumn = ref<ColumnKey | null>(null);
+
+const columns = computed<Record<ColumnKey, Task[]>>(() => ({
+  todo: dataStore.state.items.filter(f => f.status === "todo" ),
+  progress: dataStore.state.items.filter(f => f.status === "progress" ),
+  testing: dataStore.state.items.filter(f => f.status === "testing" ),
+  done: dataStore.state.items.filter(f => f.status === "done" ),
+}));
+
+const imageChange = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (!input.files || !editingTask.value) return
+  const file = input.files[0]
+  const previewUrl = URL.createObjectURL(file) //  bunda rasm faqat brauzerda saqlanadi json-server esa shuni saqlaysi
+
+  editingTask.value.files = [{
+    name: file.name,
+    type: file.type,
+    url: previewUrl
+  }]
+}
+  // const reader = new FileReader() // bu esa base64 qilib uzun tekst bilan saqlaydi
+  // reader.onload = () => { editingTask.value!.files = [{
+  //   name: file.name,
+  //   type: file.type,
+  //   url: reader.result as string
+  // }]
+  // }
+  // reader.readAsDataURL(file)
+
+
+const editItem = (item: Task) => {
+  editingTask.value = {...item}
+  showTaskModal.value = true
+
+}
+const deleteItem = async (id: string) => {
+  try {
+    const response = await axios.delete(`http://localhost:3000/posts/${id}`)
+    dataStore.state.items = dataStore.state.items.filter(f => f.id !== id)
+    await dataStore.loadGetApi()
   }
-])
-
-const todoCount = computed(() => items.value.filter(item => item.status === 1).length);
-const inProgressCount = computed(() => items.value.filter(item => item.status === 2).length);
-const completedCount = computed(() => items.value.filter(item => item.status === 3).length);
-
-
-const submitForm = () => {
-  if (selectedForm.value !== null) {
-    const index = items.value.findIndex(item => item.id === form.value.id);
-   if (index !== -1) {
-     items.value[index] = {
-       ... form.value
-     };
-   }
-   Toast.success("Successfully changed!");
-  } else {
-    form.value.id = items.value.length + 1;
-    items.value.push({... form.value});
-    Toast.success("Added successfully!");
+  catch (error) {
+    console.log(error);
   }
-  console.log('Itemlar', items.value);
-visibleForm.value = false;
-selectedForm.value = null;
-  resetForm()
 }
 
-const editForm = (item: any) => {
-  selectedForm.value = item.id;
-  visibleForm.value = true;
-  form.value = {...item};
-}
-
-const deleteItem = (id: number | null) => {
-  if (id === null ) return Toast.error('An error occurred!');
-  const itemCheck = items.value.find(item => item.id === id);
-  if (itemCheck?.checked === true)
-    return Toast.info("This information is marked!");
-  const index = items.value.findIndex(i => i.id === id);
-  if (index !== -1) {
-    items.value.splice(index, 1);
-  }
-  Toast.info("Successfully deleted!");
-}
-
-const resetForm = () => {
-  form.value = {
-    id: null,
+const addTask = (column: ColumnKey) => {
+  editingTask.value = {
+    id: '',
     title: '',
-    checked: false,
-    status: '',
-    data: null,
+    status: column,
+    files: []
   };
-  selectedForm.value = null;
-}
+  editingColumn.value = column;
+  showTaskModal.value = true;
+};
 
-const statusColors: Record<string, string> = {
-  1: "text-blue-300 bg-blue-950",
-  2: "bg-[#213F40FF] text-green-400",
-  3: "bg-[#38333AFF] text-[#FB6F3AFF]",
-}
+const updateTask = (column: ColumnKey, updatedTask: Task) => {
+  editingTask.value = { ...updatedTask};
+  editingColumn.value = column;
+  showTaskModal.value = true;
+};
 
-const statusColor: Record<string, string> = {
-  1: "text-blue-600 bg-blue-100",
-  2: "bg-[#EAFBF1FF] text-[#027984FF]",
-  3: "bg-[#FCF0E9FF] text-[#FB8644FF]",
-}
-
-const optionStatuses = [
-  {
-    id: 1,
-    status: "To Do",
-  },
-  {
-    id: 2,
-    status: "In Progress",
-  },
-  {
-    id: 3,
-    status: "Completed",
+const deleteTask = async (column: ColumnKey, taskId: string) => {
+  try {
+    const res = await axios.delete(`http://localhost:3000/posts/${taskId}`)
+    Toast.info('Task deleted!')
+    console.log('Delete',res.data)
+    dataStore.state.items = dataStore.state.items.filter(item => item.id !== taskId);
+    columns.value[column] = columns.value[column].filter(item => item.id !== taskId);
   }
-]
-
-const getStatusText = (id: number | string) => {
-  return optionStatuses.find(s => s.id === id)?.status || 'Unknown';
+  catch (error) {
+    console.error(error);
+  }
 };
 
+const submitTask = async () => {
+  if (!editingTask.value || !editingColumn.value) return;
 
-const closeVisibleForm = () => {
-  visibleForm.value = false;
-}
+  const uploadedFiles: TaskFile[] = [];
 
-const clickFormVisible = () => {
-  visibleForm.value = true;
-}
-const dataItem = (inputDate: string | number | Date | undefined | null) => {
-  if (!inputDate) return '';
+  editingTask.value.files = [...editingTask.value.files, ...uploadedFiles];
 
-  const data = new Date(inputDate);
-  if (Number.isNaN(data.getTime())) return String(inputDate);
-  const monthName = [
-    "Yan", "Fev", "Mar", "Apr", "May", "Iyn",
-    "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"
-  ];
+  console.log(typeof editingTask.value.id);
+  // NEW Task
+  if (!editingTask.value.id) {
+    editingTask.value.id = Date.now().toString();
 
-  const day = data.getDate().toString().padStart(2, "0");
-  const year = data.getFullYear();
-  const month = monthName[data.getMonth()];
+    const res = await axios.post('http://localhost:3000/posts', editingTask.value)
+    columns.value[editingColumn.value].push(editingTask.value!);
+    dataStore.state.items.push(res.data);
+    Toast.success('Task created!');
+  }
+  // EDIT Task
+  else {
+    const response = await axios.put(`http://localhost:3000/posts/${editingTask.value.id}`, editingTask.value)
+    const index = dataStore.state.items.findIndex(t => t.id === editingTask.value.id);
+    dataStore.state.items[index] = response.data;
+    const col = columns.value[editingColumn.value!];
+    const i = col.findIndex(t => t.id === editingTask.value?.id);
+    if (i !== -1) col[i] = editingTask.value!;
+    Toast.success('Task updated!');
+  }
 
-  return `${day} ${month} ${year}`;
+  closeModal();
 };
 
+const closeModal = () => {
+  showTaskModal.value = false;
+  editingTask.value = null;
+  editingColumn.value = null;
+};
+
+onMounted(() => {
+  dataStore.loadGetApi()
+})
 </script>
 
 <style scoped>
-.textItem{
-  color: #989696;
-  text-decoration-line: line-through;
-}
 </style>

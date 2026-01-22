@@ -1,0 +1,31 @@
+{
+  "posts": [
+    {
+      "id": "1769078753340",
+      "title": "dghd",
+      "status": "todo",
+      "files": [
+        {
+          "name": "image1.png",
+          "type": "image/png",
+          "url": "blob:http://localhost:5174/c3141d9f-6c65-470e-9818-6b3647a3fa36"
+        }
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

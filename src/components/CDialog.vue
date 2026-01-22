@@ -15,7 +15,7 @@
           <div
               class="bg-gray-200 min-w-[400px] shadow-xl relative pt-2 max-h-[90vh] my-4 rounded-xl"
               :class="[
-                  themeStore.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white',
+                  themeStore.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700',
               bodyClass,
               { animated: animationIn },
               { 'overflow-y-auto': !isFlow },

@@ -5,3 +5,17 @@ export interface IForm {
     number: number | string;
     data: string;
 }
+
+export interface TaskFile {
+    name: string;
+    url: string;
+    size: number;
+    type: string;
+}
+
+export interface ApiItems {
+    id: string,
+    title: string,
+    status: string,
+    files: TaskFile[],
+}

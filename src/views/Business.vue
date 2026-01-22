@@ -232,7 +232,17 @@ const pushItem = (newItem) => {
   saveToLocal()
   resetForm();
 }
-
+// const statusColors: Record<string, string> = {
+//   1: "text-blue-300 bg-blue-950",
+//   2: "bg-[#213F40FF] text-green-400",
+//   3: "bg-[#38333AFF] text-[#FB6F3AFF]",
+// }
+//
+// const statusColor: Record<string, string> = {
+//   1: "text-blue-600 bg-blue-100",
+//   2: "bg-[#EAFBF1FF] text-[#027984FF]",
+//   3: "bg-[#FCF0E9FF] text-[#FB8644FF]",
+// }
 
 const editForm = (id) => {
   isEditing.value = true;

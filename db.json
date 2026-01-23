@@ -1,72 +1,44 @@
 {
   "posts": [
     {
-      "id": "1769148461564",
-      "lastName": "",
-      "firstName": "wefg",
-      "title": "fdqwf",
+      "id": "1769168034765",
+      "lastName": "erhe",
+      "firstName": "retye",
+      "title": "ehe",
+      "status": "todo",
+      "files": [
+        {
+          "name": "image1.png",
+          "type": "image/png",
+          "url": "blob:http://localhost:5174/dea406b1-2724-4548-9fbf-0d406ff76022"
+        }
+      ]
+    },
+    {
+      "id": "1769168044268",
+      "lastName": "rg",
+      "firstName": "erge",
+      "title": "egreg",
       "status": "progress",
+      "files": [
+        {
+          "name": "imageI.png",
+          "type": "image/png",
+          "url": "blob:http://localhost:5174/1b1c9368-97a2-4235-831f-7f7397a75325"
+        }
+      ]
+    },
+    {
+      "id": "1769173311748",
+      "lastName": "dfh",
+      "firstName": "erhe",
+      "title": "ere",
+      "status": "testing",
       "files": [
         {
           "name": "img2.png",
           "type": "image/png",
-          "url": "blob:http://localhost:5174/972f6ee8-5883-4774-aac5-149766197731"
-        }
-      ]
-    },
-    {
-      "id": "1769148467285",
-      "lastName": "afaf",
-      "firstName": "wew",
-      "title": "",
-      "status": "progress",
-      "files": [
-        {
-          "name": "white_horse.jpg",
-          "type": "image/jpeg",
-          "url": "blob:http://localhost:5174/7f5b61e9-9076-4204-abbc-1c26ffeff343"
-        }
-      ]
-    },
-    {
-      "id": "1769148475461",
-      "lastName": "",
-      "firstName": "",
-      "title": "",
-      "status": "testing",
-      "files": [
-        {
-          "name": "person.jpg",
-          "type": "image/jpeg",
-          "url": "blob:http://localhost:5174/e8a3de16-3391-4e1e-93a5-d1dd19e95649"
-        }
-      ]
-    },
-    {
-      "id": "1769152236693",
-      "lastName": "",
-      "firstName": "",
-      "title": "",
-      "status": "testing",
-      "files": [
-        {
-          "name": "football.png",
-          "type": "image/png",
-          "url": "blob:http://localhost:5174/00803b08-9ad7-44a5-9752-63abbaa943cb"
-        }
-      ]
-    },
-    {
-      "id": "1769152652893",
-      "lastName": "",
-      "firstName": "",
-      "title": "",
-      "status": "testing",
-      "files": [
-        {
-          "name": "calendar-solid-full.svg",
-          "type": "image/svg+xml",
-          "url": "blob:http://localhost:5174/da1ac273-8c8a-4e8a-a5d4-a1c427894573"
+          "url": "blob:http://localhost:5174/8d483901-3595-4a76-9e48-55ba9fbfd571"
         }
       ]
     }

@@ -15,6 +15,8 @@ export interface TaskFile {
 
 export interface ApiItems {
     id: string,
+    lastName: string,
+    firstName: string,
     title: string,
     status: string,
     files: TaskFile[],

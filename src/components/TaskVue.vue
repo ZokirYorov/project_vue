@@ -276,6 +276,7 @@
           <col style="width: 15%">
           <col style="width: 15%">
           <col style="width: 15%">
+          <col style="width: 15%">
         </colgroup>
         <thead
         >
@@ -285,6 +286,7 @@
           <th class="text-start px-1 py-2">Name</th>
           <th class="text-start px-1 py-2">Title</th>
           <th class="text-start px-1 py-2">Status</th>
+          <th class="text-start px-1 py-2">Data</th>
           <th class="text-start px-1 py-2">Operations</th>
         </tr>
         </thead>
@@ -302,6 +304,7 @@
           <td class="px-2 py-3">{{item.firstName}} {{item.lastName}}</td>
           <td class="px-2 py-3">{{item.title}}</td>
           <td class="px-2 py-3">{{item.status}}</td>
+          <td class="px-2 py-3">{{formatDate(item.date)}}</td>
           <td class="px-2 py-3">
             <div
                 class="flex items-center gap-2"
@@ -352,6 +355,7 @@ interface Task {
   id: string;
   lastName: string,
   firstName: string,
+  date: Date,
   title: string;
   status: string;
   files: TaskFile[];
@@ -391,6 +395,14 @@ const imageChange = (event: Event) => {
   // }
   // reader.readAsDataURL(file)
 
+const formatDate = (date: Date) => {
+  if (!date) return
+  const data = new Date(date);
+  const day = data.getFullYear().toString();
+  const month = data.getMonth().toString().slice(-2);
+  const year = data.getDay().toString().slice(-2);
+  return `${year}.${month + 1}.${day}`;
+}
 
 const editItem = (item: Task) => {
   editingTask.value = {...item}
@@ -413,6 +425,7 @@ const addTask = (column: ColumnKey) => {
     id: '',
     lastName: '',
     firstName: '',
+    date: new Date(),
     title: '',
     status: column,
     files: []
@@ -491,6 +504,7 @@ const submitTask = async () => {
   // NEW
   if (!task.id) {
     task.id = Date.now().toString();
+    task.date = new Date();
 
     const res = await axios.post('http://localhost:3000/posts', task);
     dataStore.state.items.push(res.data);

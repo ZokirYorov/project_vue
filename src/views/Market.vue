@@ -173,7 +173,7 @@
           v-for="(item, status) in columns"
           :key="status"
       >
-      <div class="flex items-center justify-between p-2"
+      <div class="flex items-center cursor-pointer justify-between p-2"
            @click="clickDrop(status)"
       >
         <span
@@ -223,7 +223,6 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue'
 import { useStore } from "@/stores";
-import {ApiItems} from "@/models/ProjectModels";
 import axios from "axios";
 
 const dataStore = useStore();

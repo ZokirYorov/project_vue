@@ -1,44 +1,17 @@
 {
   "posts": [
     {
-      "id": "1769168034765",
-      "lastName": "erhe",
-      "firstName": "retye",
-      "title": "ehe",
+      "id": "1769426034576",
+      "lastName": "Doe",
+      "firstName": "Jon",
+      "date": "2026-01-26T11:13:54.576Z",
+      "title": "Test",
       "status": "todo",
       "files": [
         {
           "name": "image1.png",
           "type": "image/png",
-          "url": "blob:http://localhost:5174/dea406b1-2724-4548-9fbf-0d406ff76022"
-        }
-      ]
-    },
-    {
-      "id": "1769168044268",
-      "lastName": "rg",
-      "firstName": "erge",
-      "title": "egreg",
-      "status": "progress",
-      "files": [
-        {
-          "name": "imageI.png",
-          "type": "image/png",
-          "url": "blob:http://localhost:5174/1b1c9368-97a2-4235-831f-7f7397a75325"
-        }
-      ]
-    },
-    {
-      "id": "1769173311748",
-      "lastName": "dfh",
-      "firstName": "erhe",
-      "title": "ere",
-      "status": "testing",
-      "files": [
-        {
-          "name": "img2.png",
-          "type": "image/png",
-          "url": "blob:http://localhost:5174/8d483901-3595-4a76-9e48-55ba9fbfd571"
+          "url": "blob:http://localhost:5174/420e8931-58d9-4420-a7f6-98d71e7e4d32"
         }
       ]
     }

@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import {createApp} from "vue";
 
 const routes: Array<RouteRecordRaw>  = [
     {
@@ -14,7 +15,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 0,
-                    icon: 'fa-solid fa-briefcase'
+                    icon: 'fa-solid fa-briefcase',
+                    title: 'Business' as string,
                 }
             },
             {
@@ -24,7 +26,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 1,
-                    icon: 'fa-regular fa-address-card'
+                    icon: 'fa-regular fa-address-card',
+                    title: 'Employee' as string,
                 }
             },
             {
@@ -34,7 +37,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 2,
-                    icon: 'fa-solid fa-layer-group'
+                    icon: 'fa-solid fa-layer-group',
+                    title: 'Categories' as string,
                 }
             },
             {
@@ -44,7 +48,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 3,
-                    icon: 'fa-brands fa-creative-commons-share'
+                    icon: 'fa-brands fa-creative-commons-share',
+                    title: 'Creator' as string,
                 }
             },
             {
@@ -54,7 +59,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 4,
-                    icon: 'fa-regular fa-file-lines'
+                    icon: 'fa-regular fa-file-lines',
+                    title: 'Income' as string,
                 }
             },
             {
@@ -64,7 +70,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 5,
-                    icon: 'fa-solid fa-shop'
+                    icon: 'fa-solid fa-shop',
+                    title: 'Market' as string,
                 }
             },
             {
@@ -74,7 +81,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 6,
-                    icon: 'fa-solid fa-scale-unbalanced-flip'
+                    icon: 'fa-solid fa-scale-unbalanced-flip',
+                    title: 'Measure' as string,
                 }
             },
             {
@@ -84,7 +92,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 7,
-                    icon: 'fa-solid fa-file-lines'
+                    icon: 'fa-solid fa-file-lines',
+                    title: 'OutgoingProduct' as string,
                 }
             },
             {
@@ -94,7 +103,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 8,
-                    icon: 'fa-solid fa-image-portrait'
+                    icon: 'fa-solid fa-image-portrait',
+                    title: 'Position' as string,
                 }
             },
             {
@@ -104,7 +114,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 9,
-                    icon: 'fa-brands fa-product-hunt'
+                    icon: 'fa-brands fa-product-hunt',
+                    title: 'Product' as string,
                 }
             },
             {
@@ -114,7 +125,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 10,
-                    icon: 'fa-solid fa-house'
+                    icon: 'fa-solid fa-house',
+                    title: 'Room' as string,
                 }
             },
             {
@@ -124,7 +136,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 11,
-                    icon: 'fa-solid fa-tag'
+                    icon: 'fa-solid fa-tag',
+                    title: 'TagVue' as string,
                 }
             },
             {
@@ -134,7 +147,8 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 12,
-                    icon: 'fa-solid fa-warehouse'
+                    icon: 'fa-solid fa-warehouse',
+                    title: 'WareHouse' as string,
                 }
             },
             {
@@ -144,13 +158,18 @@ const routes: Array<RouteRecordRaw>  = [
                 meta: {
                     requiresAuth: true,
                     id: 13,
-                    icon: 'fa-solid fa-user'
+                    icon: 'fa-solid fa-user',
+                    title: 'UserProfile' as string,
                 }
             },
             {
                 path: '/task',
                 name: 'TaskVue',
                 component: () => import('../components/TaskVue.vue'),
+                meta: {
+                    requiresAuth: true,
+                    title: 'TaskVue' as string,
+                }
             }
         ]
     },
@@ -160,5 +179,10 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
     linkExactActiveClass: 'bg-gray-600',
+})
+const defaultApp = 'Frontend'
+
+router.beforeEach((to, from) => {
+    document.title = `${to.meta.title}` || defaultApp
 })
 export default router

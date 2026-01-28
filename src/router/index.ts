@@ -181,7 +181,7 @@ const router = createRouter({
 })
 const defaultApp = 'Frontend'
 
-router.beforeEach((to, from) => {
+router.beforeEach((to, _) => {
     document.title = `${to.meta.title}` || defaultApp
 })
 export default router

@@ -94,7 +94,7 @@
                   <img
                       alt="preview"
                       :src="item.imageUrl"
-                      class="rounded-2xl max-w-[800px] max-h-[500px]"
+                      class="rounded-2xl max-w-[1500px] max-h-[800px]"
                       :style="slotProps.style"
                       @click="slotProps.onClick"
                   />
@@ -127,7 +127,38 @@
         </tbody>
       </table>
     </div>
+<!--    <AppSelect-->
+<!--        v-model="form.name"-->
+<!--        options=""-->
+<!--        :disabled-value="t('home.selectSection') + ' ' + t('components.select')"-->
+<!--        :label="t('home.selectSection') + ' ' + t('components.select')"-->
+<!--        text-field="name"-->
+<!--        value-field="id"-->
+<!--        class="text-md"-->
+<!--        has-reset-->
+<!--        :resetText="t('components.everyone') + ' ' + t('home.section')"-->
+<!--        @update:modelValue="changeFilter('departmentId', $event)"-->
+<!--    />-->
   </div>
+<!--  <div class="flex flex-col gap-4 w-64">-->
+<!--     Birinchi input-->
+<!--    <input-->
+<!--        type="text"-->
+<!--        v-model="firstInput"-->
+<!--        placeholder="Birinchi input"-->
+<!--        class="border p-2 rounded"required-->
+<!--    />-->
+<!---->
+<!--     Ikkinchi input-->
+<!--    <input-->
+<!--        type="text"-->
+<!--        required-->
+<!--        v-model="secondInput"-->
+<!--        placeholder="Ikkinchi input"-->
+<!--        class="border p-2 rounded"-->
+<!--        :disabled="!firstInput"-->
+<!--    />-->
+<!--  </div>-->
 </template>
 
 <script setup>
@@ -141,7 +172,62 @@ import {useDownload} from "@/composable/useDownload.ts";
 import { useToast } from "vue-toastification";
 import { useStore } from "@/stores/index.ts";
 import Image from "primevue/image"
+// const firstInput = ref('')
+// const secondInput = ref('')
 
+// const changeFilter = (
+//     type: 'departmentId' | 'userStatus' | 'position',
+//     value: string,
+// ) => {
+//   if (type === 'departmentId') {
+//     selectedDepartmentId.value = value
+//   }
+//
+//   if (type === 'userStatus') {
+//     selectedStatus.value = value;
+//   }
+//
+//   if (type === 'position') {
+//     selectedPositionStatus.value = value;
+//   }
+//
+//   loadAllUsers();
+// };
+// onMounted(async () => {
+//   try {
+//
+//     const { userStatus, departmentId, positionCode } = route.query;
+//
+//     if (typeof userStatus === 'string') {
+//       selectedStatus.value = userStatus;
+//     }
+//
+//     if (typeof departmentId === 'string') {
+//       selectedDepartmentId.value = departmentId;
+//     }
+//
+//     if (typeof positionCode === 'string') {
+//       selectedPositionStatus.value = positionCode;
+//     }
+//     //  bu onMounted esa router orqali keladigan filterni olib keladi
+//     const promises = [];
+//
+//     if (!departments.value?.content?.length) {
+//       promises.push(loadDepartments());
+//     }
+//     if (!positions.value?.length) {
+//       promises.push(loadPositions());
+//     }
+//
+//     promises.push(loadAllUsers());
+//
+//     if (promises.length > 0) {
+//       await Promise.all(promises);
+//     }
+//   } catch (error) {
+//     console.error(t('users.errorLoadData'), error);
+//   }
+// });
 
 const themeStore = useStore();
 // const formStore = useStore();
@@ -304,5 +390,9 @@ const resetForm = () => {
 
 
 <style scoped>
-
+input:disabled {
+  border: 1px solid gray;
+  background-color: darkgray;
+  cursor: not-allowed;
+}
 </style>

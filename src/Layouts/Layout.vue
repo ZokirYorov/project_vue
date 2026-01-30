@@ -79,4 +79,26 @@ onMounted(() => {
 })
 </script>
 <style>
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: blueviolet;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-circle {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 2px solid blue;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease;
+}
 </style>

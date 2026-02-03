@@ -228,6 +228,37 @@ import Image from "primevue/image"
 //     console.error(t('users.errorLoadData'), error);
 //   }
 // });
+// interface UsersQuery {
+//   departmentId?: number | string | null;
+//   positionCode?: number | string | null;
+// }
+//
+// interface DashboardItems {
+//   userCount?: number;
+//   userStatus?: number;
+//   departmentCount?: number;
+//   freeJobCount?: number;
+//   totalJobCount?: number;
+//   positionCount?: number;
+//   itemCount?: number;
+//   inventoryCount?: number;
+//   inventoryActiveCount?: number;
+//   inventoryFreeCount?: number;
+//   departmentList?: Department[];
+//   categoryList?: Array<{name: string, itemCount: number}>;
+// }
+//
+// const dashboardItems = ref<DashboardItems>({
+//   userCount: 0,
+//   userStatus: 0,
+//   departmentCount: 0,
+//   positionCount: 0,
+//   itemCount: 0,
+//   inventoryCount: 0,
+//   inventoryActiveCount: 0,
+//   inventoryFreeCount: 0,
+//   departmentList: []
+// });
 // const onActiveClick = () => clickOpenPage('/users', { userStatus: 'ACTIVE' })
 // const onInActiveClick = () => clickOpenPage('/users', { userStatus: 'INACTIVE' })
 // const changeFilter = (type : 'departmentId' | 'positionCode', value: number | string | null ) => {

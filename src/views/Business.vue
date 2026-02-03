@@ -137,7 +137,7 @@
 <!--        class="text-md"-->
 <!--        has-reset-->
 <!--        :resetText="t('components.everyone') + ' ' + t('home.section')"-->
-<!--        @update:modelValue="changeFilter('departmentId', $event)"-->
+<!--        @update:modelValue="changeFilter('departmentId', $event)" BU SELECT DAGI QIYMATNI WATCH SIZ FILTER QILADI-->
 <!--    />-->
   </div>
 <!--  <div class="flex flex-col gap-4 w-64">-->
@@ -209,7 +209,7 @@ import Image from "primevue/image"
 //     if (typeof positionCode === 'string') {
 //       selectedPositionStatus.value = positionCode;
 //     }
-//     //  bu onMounted esa router orqali keladigan filterni olib keladi
+//     //  BU onMounted esa router orqali keladigan filterni olib keladi va filterga ulaydi
 //     const promises = [];
 //
 //     if (!departments.value?.content?.length) {
@@ -228,6 +228,29 @@ import Image from "primevue/image"
 //     console.error(t('users.errorLoadData'), error);
 //   }
 // });
+// const onActiveClick = () => clickOpenPage('/users', { userStatus: 'ACTIVE' })
+// const onInActiveClick = () => clickOpenPage('/users', { userStatus: 'INACTIVE' })
+// const changeFilter = (type : 'departmentId' | 'positionCode', value: number | string | null ) => {
+//   const query: UsersQuery = { }
+//
+//   if (type === 'departmentId') {
+//     query.departmentId = value
+//   }
+//
+//   if (type === 'positionCode') {
+//     query.positionCode = value
+//   }
+//   clickOpenPage('/users', query);
+// }
+// const clickOpenPage = (path: string, query?: any) => {
+// router.push(
+//     {
+//       path: path,
+//       query: query
+//     }
+// );
+// }
+// BU esa parent dan keladigan click tuzilishi
 
 const themeStore = useStore();
 // const formStore = useStore();

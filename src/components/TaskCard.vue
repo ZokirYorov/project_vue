@@ -5,7 +5,9 @@
     <div
         class="gap-5 flex flex-col"
     >
-      <div class="flex items-center justify-between break-all w-full">
+      <div
+          :class="themeStore.theme === 'dark' ? 'text-gray-400' : ' text-gray-500'"
+          class="flex items-center justify-between break-all w-full">
         <h4 class="w-3/4 px-3 py-2 font-semibold text-xl">{{ task.title || 'New task' }}</h4>
         <div
             class="rounded-full items-center flex justify-center  w-10 h-10"

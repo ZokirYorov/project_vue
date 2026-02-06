@@ -22,3 +22,8 @@ export interface ApiItems {
     status: string,
     files: TaskFile[],
 }
+
+export interface Comments {
+    id: string;
+    text: string;
+}

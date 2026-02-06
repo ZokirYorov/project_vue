@@ -316,7 +316,84 @@
         </tr>
         </tbody>
       </table>
-
+<!--      <div v-else>-->
+<!--        Card unknown-->
+<!--      </div>-->
+      <div
+          class="flex flex-col w-full rounded-xl bg-gray"
+          :class="themeStore.theme === 'dark' ? 'bg-gray-800' : 'bg-white'"
+      >
+        <CDialog
+            :show="visibleCommentForm"
+            @close="closeCommentModal"
+            bodyClass="rounded-lg p-6 bg-bg-primary w-[600px]"
+        >
+          <form
+              @submit.prevent="saveComment"
+              class="flex flex-col gap-4 w-full rounded-lg"
+          >
+            <AppInput
+                v-model="commentsForm.text"
+                label="Comment Text"
+                placeholder="Enter comment text"
+                type="textarea"
+            />
+            <div
+                class="flex items-center gap-2"
+            >
+              <CButton
+                  type="button"
+                  text="Cancel"
+                  variant="ghost-accent"
+                  @click="closeCommentModal"
+              />
+              <CButton
+                  type="submit"
+                  text="Save"
+                  variant="primary"
+              />
+            </div>
+          </form>
+        </CDialog>
+        <div class="flex items-center justify-between p-2"
+        >
+          <h2
+              class="text-2xl p-2 font-semibold"
+              :class="themeStore.theme === 'dark' ? 'text-gray-300' : 'text-gray-800'"
+          >
+            Comments title
+          </h2>
+          <CButton
+              type="button"
+              text="Add comment"
+              variant="primary"
+              @click="openCommentForm"
+          />
+        </div>
+        <div
+            class="flex items-center justify-between p-2"
+            :class="dataStore.theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'"
+        >
+          <span>№</span>
+          <span>Text</span>
+          <span>Operations</span>
+        </div>
+        <div
+            class="flex items-center justify-between p-2 border-b border-gray-400 gap-4 w-full"
+            :class="themeStore.theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'"
+            v-for="(item, index) in commentsList"
+            :key="index"
+        >
+          <span class="p-2">{{index + 1}}</span>
+          <span>{{item.text}}</span>
+          <CButton
+              type="button"
+              text="Delete"
+              variant="danger"
+              @click="deleteComment(item.id)"
+          />
+         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -361,18 +438,28 @@ interface Task {
   files: TaskFile[];
 }
 
+interface Comment {
+  text: string
+}
+
 const isShowDeleteConfirm = ref(false);
 const selectedId = ref<string>('');
 const showTaskModal = ref(false);
 const editingTask = ref<Task | null>(null);
+const visibleCommentForm = ref(false);
 const editingColumn = ref<ColumnKey | null>(null);
 
+const commentsList = computed(() => dataStore.state.comment);
 const columns = computed<Record<ColumnKey, Task[]>>(() => ({
   todo: dataStore.state.items.filter(f => f.status === "todo" ),
   progress: dataStore.state.items.filter(f => f.status === "progress" ),
   testing: dataStore.state.items.filter(f => f.status === "testing" ),
   done: dataStore.state.items.filter(f => f.status === "done" ),
 }));
+
+const commentsForm = ref<Comment>({
+  text: '',
+});
 
 const imageChange = (event: Event) => {
   const input = event.target as HTMLInputElement
@@ -499,9 +586,8 @@ const closeDeleteModal = () => {
 const submitTask = async () => {
   if (!editingTask.value || !editingColumn.value) return;
 
-  const task = editingTask.value; // 👈 TypeScript endi ishonadi
+  const task = editingTask.value;
 
-  // NEW
   if (!task.id) {
     task.id = Date.now().toString();
     task.date = new Date();
@@ -535,8 +621,50 @@ const closeModal = () => {
   editingColumn.value = null;
 };
 
+
+const saveComment = async () => {
+  try {
+    const res = await axios.post(`http://localhost:3000/comments`,
+        {
+          text: commentsForm.value.text,
+        })
+    dataStore.state.comment.push(res.data);
+    console.log('Response',res.data);
+    visibleCommentForm.value = false;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const deleteComment = async (id: string) => {
+  console.log('Delete comment:', id);
+  try {
+    await axios.delete(`http://localhost:3000/comments/${id}`);
+    await dataStore.loadGetPosts()
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const openCommentForm = () => {
+  visibleCommentForm.value = true;
+  commentsForm.value = {
+    text: '',
+  }
+}
+
+const closeCommentModal = () => {
+  visibleCommentForm.value = false;
+  commentsForm.value = {
+    text: '',
+  }
+}
+
 onMounted(() => {
   dataStore.loadGetApi()
+  dataStore.loadGetPosts()
 })
 </script>
 

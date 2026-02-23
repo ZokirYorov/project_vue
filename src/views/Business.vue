@@ -283,6 +283,30 @@ import Image from "primevue/image"
 // }
 // BU esa parent dan keladigan click tuzilishi
 
+// const statusColor: Record<string, string> = {
+//   Kutilmoqda: 'bg-yellow-100 text-yellow-700',
+//   Jarayonda: 'bg-green-100 text-green-700',
+//   Bajarilgan: 'bg-blue-100 text-blue-700'
+// }
+// bular statusga rang berish kodlari
+
+// const statusColor = (status: StatusColors) => {
+//   const colors = {
+//     Kutilmoqda: 'bg-yellow-100 text-yellow-800',
+//     Jarayonda: 'bg-blue-100 text-blue-800',
+//     Bajarilgan: 'bg-green-100 text-green-800'
+//   };
+//   return colors[status] || colors.Kutilmoqda;
+// }
+
+// function getStatusText(status) {
+//   const texts = {
+//     'pending': 'Kutilmoqda',
+//     'in-progress': 'Jarayonda',
+//     'completed': 'Bajarilgan'
+//   };
+//   return texts[status] || texts.pending;
+// }
 const themeStore = useStore();
 // const formStore = useStore();
 const Toast = useToast();

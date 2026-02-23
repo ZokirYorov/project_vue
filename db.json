@@ -1,5 +1,21 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "id": "1771247152632",
+      "lastName": "vbfbdb",
+      "firstName": "rthrh",
+      "date": "2026-02-16T13:05:52.632Z",
+      "title": "hjrh",
+      "status": "testing",
+      "files": [
+        {
+          "name": "image1.png",
+          "type": "image/png",
+          "url": "blob:http://localhost:5175/3dd1ec8b-4826-46d3-94b1-638c000fa53a"
+        }
+      ]
+    }
+  ],
   "comments": [
     {
       "id": "f1f1",
@@ -8,6 +24,10 @@
     {
       "id": "7899",
       "text": "bligi"
+    },
+    {
+      "id": "0f83",
+      "text": "It's ok"
     }
   ],
   "profile": {

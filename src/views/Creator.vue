@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex flex-col h-full"
+      class="flex flex-col w-full h-full pr-10"
   >
     <div
         :class="themeStore.theme === 'dark' ? 'bg-gray-800 text-white border border-gray-700' : 'border border-gray-200 bg-white text-gray-800'"
@@ -53,7 +53,7 @@
                 <template #preview="slotProps">
                   <img
                       alt="preview"
-                      :src="data.imageUrl"
+                      :src="getImage(data.imageUrl)"
                       class="rounded-2xl max-w-[1500px] max-h-[800px]"
                       :style="slotProps.style"
                       @click="slotProps.onClick"

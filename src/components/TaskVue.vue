@@ -28,7 +28,7 @@
          :class="themeStore.theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200 text-gray-600'"
     >
       <div
-          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-600'"
           class="w-1/4 p-3 group rounded"
       >
         <div class="flex items-center text-center w-full h-[50px] gap-2 p-2">
@@ -73,7 +73,7 @@
 
       <!-- PROGRESS Column -->
       <div
-          :class="themeStore.theme === 'dark' ? 'bg-gray-700 text-gray-600' : 'bg-gray-100 text-gray-400'"
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700 text-gray-600' : 'bg-gray-100 text-gray-600'"
           class="w-1/4 p-3 group rounded"
       >
         <div class="flex items-center w-full h-[50px] gap-2 p-2">
@@ -118,7 +118,7 @@
 
       <!-- TESTING Column -->
       <div
-          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-600'"
           class="w-1/4 p-3 group rounded"
       >
         <div class="flex items-center w-full h-[50px] gap-2 p-2">
@@ -163,7 +163,7 @@
 
       <!-- DONE Column -->
       <div
-          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-400'"
+          :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100 text-gray-600'"
           class="w-1/4 p-3 group rounded"
       >
         <div class="flex items-center w-full h-[50px] gap-2 p-2">
@@ -207,7 +207,6 @@
       </div>
     </div>
 
-    <!-- Task Modal -->
     <CDialog
         :show="showTaskModal"
         has-close-icon
@@ -219,7 +218,6 @@
           {{ editingTask?.id ? 'Edit form' : 'Add form' }}
         </h2>
 
-        <!-- Title Input -->
         <AppInput
             label="Task Title"
             placeholder="Enter task title"
@@ -265,7 +263,7 @@
         class="flex flex-col gap-4 h-full pb-6"
     >
       <table
-          v-if="dataStore.state.items.length > 0"
+          v-if="tasks.length > 0"
           class="w-full rounded-lg shadow-md"
           :class="themeStore.theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200 text-gray-600'"
       >
@@ -287,14 +285,14 @@
           <th class="text-start px-1 py-2">Title</th>
           <th class="text-start px-1 py-2">Status</th>
           <th class="text-start px-1 py-2">Data</th>
-          <th class="text-start px-1 py-2">Operations</th>
+          <th class="text-start px-1 py-2">Uppercases</th>
         </tr>
         </thead>
         <tbody>
         <tr
             class="border-b border-gray-400 rounded"
             :class="themeStore.theme === 'dark' ? 'bg-gray-600 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'"
-            v-for="(item, index) in dataStore.state.items"
+            v-for="(item, index) in tasks"
             :key="item.id"
         >
           <td class="text-center px-2 py-3">{{index + 1}}</td>
@@ -309,16 +307,14 @@
             <div
                 class="flex items-center gap-2"
             >
-              <button @click="editItem(item)" class="bg-gray-400 rounded px-2 py-1">Edit</button>
-              <button @click="deleteItem(item.id)" class="bg-red-800 rounded px-2 py-1 cursor-pointer hover:bg-red-700">Delete</button>
+              <span class="bg-emerald-500/30 p-2 font-semibold rounded-full">
+              {{(item.lastName).charAt(0).toUpperCase()}} {{(item.firstName).charAt(0).toUpperCase()}}
+              </span>
             </div>
           </td>
         </tr>
         </tbody>
       </table>
-<!--      <div v-else>-->
-<!--        Card unknown-->
-<!--      </div>-->
       <div
           class="flex flex-col w-full rounded-xl bg-gray"
           :class="themeStore.theme === 'dark' ? 'bg-gray-800' : 'bg-white'"
@@ -407,7 +403,6 @@ import AppInput from "@/components/ui/AppInput.vue";
 import CDialog from "@/components/CDialog.vue";
 import TaskCard from "@/components/TaskCard.vue";
 import Draggable from "vuedraggable";
-import axios from "axios";
 import { useToast } from "vue-toastification";
 import DeleteConfirm from "@/components/DeleteConfirm.vue";
 
@@ -448,14 +443,46 @@ const showTaskModal = ref(false);
 const editingTask = ref<Task | null>(null);
 const visibleCommentForm = ref(false);
 const editingColumn = ref<ColumnKey | null>(null);
+const tasks = ref<Task[]>([]);
+const comments = ref<any[]>([]);
 
-const commentsList = computed(() => dataStore.state.comment);
+// const commentsList = computed(() => dataStore.state.comment);
+// const columns = computed<Record<ColumnKey, Task[]>>(() => ({
+//   todo: dataStore.state.items.filter(f => f.status === "todo" ),
+//   progress: dataStore.state.items.filter(f => f.status === "progress" ),
+//   testing: dataStore.state.items.filter(f => f.status === "testing" ),
+//   done: dataStore.state.items.filter(f => f.status === "done" ),
+// }));
+
+const commentsList = computed(() => comments.value);
+
 const columns = computed<Record<ColumnKey, Task[]>>(() => ({
-  todo: dataStore.state.items.filter(f => f.status === "todo" ),
-  progress: dataStore.state.items.filter(f => f.status === "progress" ),
-  testing: dataStore.state.items.filter(f => f.status === "testing" ),
-  done: dataStore.state.items.filter(f => f.status === "done" ),
-}));
+  todo: tasks.value.filter(task => task.status === 'todo'),
+  progress: tasks.value.filter(task => task.status === 'progress'),
+  testing: tasks.value.filter(task => task.status === 'testing'),
+  done: tasks.value.filter(task => task.status === 'done'),
+}))
+
+const TASK_KEY = "tasks";
+const COMMENT_KEY = "comments";
+
+const saveTasks = () => {
+  localStorage.setItem(TASK_KEY, JSON.stringify(tasks.value));
+};
+
+const loadTasks = () => {
+  const data = localStorage.getItem(TASK_KEY);
+  tasks.value = data ? JSON.parse(data) : [];
+};
+
+const saveComments = () => {
+  localStorage.setItem(COMMENT_KEY, JSON.stringify(comments.value));
+};
+
+const loadComments = () => {
+  const data = localStorage.getItem(COMMENT_KEY);
+  comments.value = data ? JSON.parse(data) : [];
+};
 
 const commentsForm = ref<Comment>({
   text: '',
@@ -491,22 +518,6 @@ const formatDate = (date: Date) => {
   return `${year}.${month + 1}.${day}`;
 }
 
-const editItem = (item: Task) => {
-  editingTask.value = {...item}
-  showTaskModal.value = true
-
-}
-const deleteItem = async (id: string) => {
-  try {
-    await axios.delete(`http://localhost:3000/posts/${id}`)
-    dataStore.state.items = dataStore.state.items.filter(f => f.id !== id)
-    await dataStore.loadGetApi()
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
 const addTask = (column: ColumnKey) => {
   editingTask.value = {
     id: '',
@@ -529,14 +540,15 @@ const onDragChange = async (column: ColumnKey, evt: any) => {
   task.status = column;
 
   try {
-    await axios.put(`http://localhost:3000/posts/${task.id}`, task);
+    // await axios.put(`http://localhost:3000/posts/${task.id}`, task);
 
     // Store ni yangilash
-    const index = dataStore.state.items.findIndex(t => t.id === task.id);
+    const index = tasks.value.findIndex(t => t.id === task.id);
     if (index !== -1) {
-      dataStore.state.items[index].status = column;
+      tasks.value[index].status = column;
     }
 
+    saveTasks()
     // Toast.success(`Moved to ${column}`);
   } catch (error) {
     console.error('Drag error:', error);
@@ -552,21 +564,22 @@ const updateTask = (column: ColumnKey, updatedTask: Task) => {
 };
 
 const handleConfirm = async () => {
-  try {
-    if (!selectedId.value || !editingColumn.value) return;
+  // try {
+    // if (!selectedId.value || !editingColumn.value) return;
 
-    const res = await axios.delete(`http://localhost:3000/posts/${selectedId.value}`);
+    // const res = await axios.delete(`http://localhost:3000/posts/${selectedId.value}`);
+    // console.log('Delete item:',res.data);
 
-    console.log('Delete item:',res.data);
-    dataStore.state.items = dataStore.state.items.filter(item => item.id !== selectedId.value);
-    columns.value[editingColumn.value] = columns.value[editingColumn.value].filter(item => item.id !== selectedId.value);
+  tasks.value = tasks.value.filter(item => item.id !== selectedId.value);
+    // columns.value[editingColumn.value] = columns.value[editingColumn.value].filter(item => item.id !== selectedId.value);
 
+    saveTasks();
     Toast.info('Task deleted!')
     closeDeleteModal()
-  }
-  catch (error) {
-    console.error(error);
-  }
+  // }
+  // catch (error) {
+  //   console.error(error);
+  // }
 }
 
 const deleteTask = async (column: ColumnKey, taskId: string) => {
@@ -575,6 +588,19 @@ const deleteTask = async (column: ColumnKey, taskId: string) => {
   isShowDeleteConfirm.value = true;
 
 };
+
+const deleteComment = async (id: string) => {
+  console.log('Delete comment:', id);
+  try {
+    // await axios.delete(`http://localhost:3000/comments/${id}`);
+    // await dataStore.loadGetPosts()
+    comments.value = comments.value.filter(c => c.id !== id);
+    saveComments();
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 const closeDeleteModal = () => {
   isShowDeleteConfirm.value = false;
@@ -592,25 +618,24 @@ const submitTask = async () => {
     task.id = Date.now().toString();
     task.date = new Date();
 
-    const res = await axios.post('http://localhost:3000/posts', task);
-    dataStore.state.items.push(res.data);
+    // const res = await axios.post('http://localhost:3000/posts', task);
+    tasks.value.push(task);
     Toast.success('Task created!');
   }
   // EDIT
   else {
-    const res = await axios.put(
-        `http://localhost:3000/posts/${task.id}`,
-        task
-    );
-
-    const index = dataStore.state.items.findIndex(t => t.id === task.id);
+    // const res = await axios.put(
+    //     `http://localhost:3000/posts/${task.id}`,
+    //     task
+    // );
+    const index = tasks.value.findIndex(t => t.id === task.id);
     if (index !== -1) {
-      dataStore.state.items[index] = res.data;
+      tasks.value[index] = task;
     }
 
     Toast.success('Task updated!');
   }
-
+  saveTasks()
   closeModal();
 };
 
@@ -624,12 +649,16 @@ const closeModal = () => {
 
 const saveComment = async () => {
   try {
-    const res = await axios.post(`http://localhost:3000/comments`,
-        {
-          text: commentsForm.value.text,
-        })
-    dataStore.state.comment.push(res.data);
-    console.log('Response',res.data);
+    // const res = await axios.post(`http://localhost:3000/comments`,
+    //     {
+    //       text: commentsForm.value.text,
+    //     })
+    comments.value.push({
+      id: Date.now().toString(),
+      text: commentsForm.value.text
+    });
+    // console.log('Response',res.data);
+    saveComments();
     visibleCommentForm.value = false;
   }
   catch (error) {
@@ -637,16 +666,6 @@ const saveComment = async () => {
   }
 }
 
-const deleteComment = async (id: string) => {
-  console.log('Delete comment:', id);
-  try {
-    await axios.delete(`http://localhost:3000/comments/${id}`);
-    await dataStore.loadGetPosts()
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
 
 const openCommentForm = () => {
   visibleCommentForm.value = true;
@@ -663,8 +682,10 @@ const closeCommentModal = () => {
 }
 
 onMounted(() => {
-  dataStore.loadGetApi()
-  dataStore.loadGetPosts()
+  loadTasks();
+  loadComments();
+  // dataStore.loadGetApi()
+  // dataStore.loadGetPosts()
 })
 </script>
 

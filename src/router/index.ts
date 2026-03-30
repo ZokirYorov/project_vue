@@ -19,6 +19,16 @@ const routes: Array<RouteRecordRaw>  = [
                 }
             },
             {
+                path: '/weather',
+                name: 'Weather',
+                component: () => import('@/views/Weather.vue'),
+                meta: {
+                    requiresAuth: true,
+                    id: 1,
+                    icon: 'fa-solid fa-cloud',
+                }
+            },
+            {
                 path: '/employee',
                 name: 'Employee',
                 component: () => import("@/views/Employee.vue"),

@@ -1,7 +1,7 @@
 <template>
   <div
 
-      :class="['text-white py-6 px-6 gap-2 duration-300 transition-all h-full min-h-screen flex flex-col z-20',
+      :class="['text-white py-6 px-6 gap-2 duration-300 transition-all h-full min-h-screen flex flex-col',
       themeStore.theme === 'dark' ? 'border-r border-gray-700 text-white bg-gray-800' : 'border-r border-gray-200 bg-white',
       openMenuToggle ? 'w-[60px] items-center' : 'w-[300px]'
       ]">

@@ -14,8 +14,7 @@
            class="fa-solid fa-bars ml-10 duration-200 hover:bg-gray-500 p-1 rounded text-gray-800 cursor-pointer transition-all text-xl"
         ></i>
       </div>
-      <h2 class="text-2xl font-semibold"
-          :class="themeStore.theme === 'dark' ? 'text-white' : 'text-gray-800'"
+      <h2 class=" bg-[var(--bg)] text-[var(--text)] text-2xl font-semibold"
       >Header Component</h2>
       <router-link
           to="/task"
@@ -27,7 +26,7 @@
         <div class="flex pr-40 items-center justify-between">
           <span
             v-if="themeStore.theme === 'dark'"
-            @click="themeStore.setTheme('light')"
+            @click="toggleTheme($event)"
             title="Light mode"
             class="flex border border-gray-600 text-gray-300 hover:text-white items-center cursor-pointer justify-center rounded-full w-10 h-10 bg-gray-800 hover:bg-gray-700 transition-all duration-200 shadow-lg"
           >
@@ -44,7 +43,7 @@
           <span
               v-else
               title="Dark mode"
-              @click="themeStore.setTheme('dark')"
+              @click="toggleTheme($event)"
               class="flex items-center justify-center cursor-pointer w-10 h-10 rounded-full border border-gray-300 hover:bg-gray-100 transition-all duration-200"
           >
           <i class="fa-regular fa-moon text-gray-600 text-xl"></i>
@@ -66,9 +65,61 @@ const toggleIcon = () => {
   emit("toggle-icon");
 }
 
+const toggleTheme = (e: MouseEvent) => {
+  const x = e.clientX;
+  const y = e.clientY;
+
+  const circle = document.createElement("div");
+
+  circle.style.position = "fixed";
+  circle.style.left = x + "px";
+  circle.style.top = y + "px";
+  circle.style.width = "20px";
+  circle.style.height = "20px";
+  circle.style.borderRadius = "50%";
+
+  // rang theme ga qarab
+  circle.style.background =
+      themeStore.theme === "dark" ? "#ffffff" : "#111127";
+
+  circle.style.transform = "translate(-50%, -50%) scale(0)";
+  circle.style.transition = "transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)";
+  circle.style.zIndex = "9999";
+  circle.style.pointerEvents = "none";
+
+  document.body.appendChild(circle);
+
+  requestAnimationFrame(() => {
+    circle.style.transform = "translate(-50%, -50%) scale(200)";
+  });
+
+  // theme change o‘rtada
+  setTimeout(() => {
+    themeStore.setTheme(
+        themeStore.theme === "dark" ? "light" : "dark"
+    );
+  }, 300);
+
+  // remove
+  setTimeout(() => {
+    circle.remove();
+  }, 800);
+};
+
 </script>
 
 
 <style scoped>
+.theme-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
 
+  /* MUHIM: real theme rangini oladi */
+  background: var(--bg);
+
+  clip-path: circle(0px at var(--x) var(--y));
+  transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
 </style>

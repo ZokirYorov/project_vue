@@ -1,17 +1,17 @@
 <template>
   <div class="rounded p-4 cursor-grab mb-4 shadow"
-       :class="themeStore.theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-400'"
+       :class="themeStore.theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'"
   >
     <div
         class="gap-5 flex flex-col"
     >
       <div
-          :class="themeStore.theme === 'dark' ? 'text-gray-400' : ' text-gray-500'"
+          :class="themeStore.theme === 'dark' ? '' : 'text-gray-600'"
           class="flex items-center justify-between break-all w-full">
         <h4 class="w-3/4 px-3 py-2 font-semibold text-xl">{{ task.title || 'New task' }}</h4>
         <div
-            class="rounded-full items-center flex justify-center  w-10 h-10"
-            :class="[themeStore.theme === 'dark' ? 'bg-gray-600 ' : 'bg-gray-100',
+            class="rounded-full items-center flex justify-center text-white w-10 h-10"
+            :class="[themeStore.theme === 'dark' ? 'bg-blue-400 ' : 'bg-blue-200 ',
               Number(task.id) % 4 === 0 ? 'bg-gradient-to-br from-blue-500 to-cyan-600' :
               Number(task.id) % 4 === 1 ? 'bg-gradient-to-br from-emerald-500 to-teal-600' :
               Number(task.id) % 4 === 2 ? 'bg-gradient-to-br from-purple-500 to-pink-600' : 'bg-blue-700'
@@ -76,6 +76,6 @@ const formatDate = (date: Date) => {
   const day = data.getFullYear().toString();
   const month = data.getMonth().toString().slice(-2);
   const year = data.getDay().toString().slice(-2);
-  return `${year}.${month + 1}.${day}`;
+  return `${day}.${year}.${month + 1}`;
 }
 </script>

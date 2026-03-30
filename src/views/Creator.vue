@@ -56,7 +56,7 @@
                       :src="getImage(data.imageUrl)"
                       class="rounded-2xl max-w-[1500px] max-h-[800px]"
                       :style="slotProps.style"
-                      @click="slotProps.onClick"
+                      @click.stop
                   />
                 </template>
               </Image>

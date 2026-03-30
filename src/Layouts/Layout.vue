@@ -1,6 +1,6 @@
 <template>
-  <div class="cursor-dot" ref="dot"></div>
-  <div class="cursor-circle" ref="circle"></div>
+<!--  <div class="cursor-dot" ref="dot"></div>-->
+<!--  <div class="cursor-circle" ref="circle"></div>-->
   <div
       class="flex flex-col h-screen transition-all duration-200 overflow-y-auto"
       :class="themeStore.theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'"
